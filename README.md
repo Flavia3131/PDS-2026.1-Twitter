@@ -1,5 +1,18 @@
 # Projeto-de-Software-2026.1
 https://miguelcastela.pythonanywhere.com/login/
+
+     AS 10 FUNCIONALIDADES
+1- Chat com suporte (até mesmo para anônimos)
+2- Post
+3- Curtida
+4- Republicar
+5- Dislike
+6- Login
+7- Cadastro
+8- Alerta de senha incorreta
+9- Comentários 
+10- Feed
+
 class Post(models.Model):
     autor = models.ForeignKey(User, on_delete=models.CASCADE)
     conteudo = models.TextField(max_length=280)
