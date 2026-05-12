@@ -1,49 +1,104 @@
 # Projeto-de-Software-2026.1
 https://miguelcastela.pythonanywhere.com/login/
 
-     AS 10 FUNCIONALIDADES
-1- Chat com suporte (até mesmo para anônimos)
-2- Post
-3- Curtida
-4- Republicar
-5- Dislike
-6- Login
-7- Cadastro
-8- Alerta de senha incorreta
-9- Comentários 
-10- Feed
+# Funcionalidades já implementadas  
 
-class Post(models.Model):
-    autor = models.ForeignKey(User, on_delete=models.CASCADE)
-    conteudo = models.TextField(max_length=280)
-    data = models.DateTimeField(auto_now_add=True)
+- Chat com suporte (inclusive para usuários anônimos)  
+- Postagens  
+- Curtidas  
+- Republicações  
+- Dislikes  
+- Login  
+- Cadastro  
+- Alerta de senha incorreta  
+- Comentários  
+- Feed de publicações  
 
-  curtidas = models.ManyToManyField(User, related_name='curtidas', blank=True)
-  dislikes = models.ManyToManyField(User, related_name='dislikes', blank=True)
-  salvados = models.ManyToManyField(User, related_name='salvados', blank=True)
+---
 
+# Melhorias planejadas  
 
-  republicado_de = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE)
+- Postagem de imagens e vídeos  
+- Salvar posts favoritos  
+- Sistema de seguir usuários  
+- Perfil de usuário com foto  
+- Edição de perfil  
+- Pesquisa de usuários e posts  
+- Hashtags  
+- Chat privado  
+- Dark Mode  
+- Compartilhamento de posts  
+- Emojis/Reações nas publicações  
 
-class Comentario(models.Model):
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comentarios')
-    autor = models.ForeignKey(User, on_delete=models.CASCADE)
-    texto = models.TextField()
-    data = models.DateTimeField(auto_now_add=True)
+---
 
-  def __str__(self):
-        return f'{self.autor.username} em {self.post.id}'
+# Herança já implementada  
 
-        LOCALIZADO NA PASTA CORE E NO ARQUIVO "MODELS.PY"
+Localizado na pasta `core`, no arquivo `models.py`:  
 
-class Post(models.Model): -> A classe Post herda de models.Model.
+```python
+class Post(models.Model)
+```
 
-class Comentario(models.Model): -> A classe Comentario herda de models.Model.
+A classe `Post` herda de `models.Model`.
 
-class Suporte(models.Model): -> A classe Suporte herda de models.Model.
+```python
+class Comentario(models.Model)
+```
 
-      E O POLIMORFISMO TEM UM "TIPO" DELE TAMBÉM NO MODELS.PY
- def __str__(self):
-        return f'{self.autor.username} em {self.post.id}'
+A classe `Comentario` herda de `models.Model`.
 
-      QUE SERIA UM "Method Overriding"
+```python
+class Suporte(models.Model)
+```
+
+A classe `Suporte` herda de `models.Model`.
+
+---
+
+# Polimorfismo planejado  
+
+A ideia é implementar diferentes tipos de posts utilizando polimorfismo:  
+
+```python
+PostTexto
+PostImagem
+PostVideo
+```
+
+Cada tipo de post terá comportamentos específicos, mas compartilhando a mesma estrutura base.
+
+---
+
+# Uso do padrão Builder (Design Pattern Criacional)  
+
+O plano é utilizar o padrão Builder justamente na parte relacionada ao polimorfismo, separando a construção do objeto da sua representação.  
+
+O Builder ajuda a resolver problemas causados por construtores com muitos parâmetros, permitindo criar objetos passo a passo. Já o polimorfismo permite que diferentes objetos respondam de maneiras diferentes utilizando a mesma chamada de método.  
+
+A junção dos dois padrões parece uma boa solução para a estrutura do projeto, principalmente na parte de criação de diferentes tipos de posts.  
+
+## Exemplo da ideia  
+
+```python
+builder = PostBuilder()
+
+post = (
+    builder
+    .tipo("imagem")
+    .texto("Olá")
+    .imagem("foto.png")
+    .build()
+)
+```
+
+Então:  
+
+- **Builder** → responsável por construir o post  
+- **Polimorfismo** → responsável pelo comportamento específico de cada tipo de post  
+
+---
+
+# Observação  
+
+Os planos descritos acima podem ser alterados conforme o desenvolvimento do projeto evoluir. No momento, esta é a arquitetura planejada.
