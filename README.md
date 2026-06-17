@@ -16,19 +16,15 @@ https://miguelcastela.pythonanywhere.com/login/
 
 ---
 
-# Melhorias planejadas  
+# Melhorias
 
 - Postagem de imagens e vídeos  
 - Salvar posts favoritos  
 - Sistema de seguir usuários  
 - Perfil de usuário com foto  
-- Edição de perfil  
-- Pesquisa de usuários e posts  
-- Hashtags  
-- Chat privado  
-- Dark Mode  
+- Edição de perfil    
+- Chat privado   
 - Compartilhamento de posts  
-- Emojis/Reações nas publicações  
 
 ---
 
@@ -56,49 +52,41 @@ A classe `Suporte` herda de `models.Model`.
 
 ---
 
-# Polimorfismo planejado  
-
-A ideia é implementar diferentes tipos de posts utilizando polimorfismo:  
-
-```python
-PostTexto
-PostImagem
-PostVideo
-```
-
-Cada tipo de post terá comportamentos específicos, mas compartilhando a mesma estrutura base.
-
----
-
 # Uso do padrão Builder (Design Pattern Criacional)  
 
-O plano é utilizar o padrão Builder justamente na parte relacionada ao polimorfismo, separando a construção do objeto da sua representação.  
+O Builder ajuda a resolver problemas causados por construtores com muitos parâmetros, permitindo criar objetos passo a passo. Ele foi usado para dividir o processo de criação de um post, que é um objeto complexo, em passos menores, para depois construir esse post conforme seu tipo, seja texto, imagem ou vídeo.
 
-O Builder ajuda a resolver problemas causados por construtores com muitos parâmetros, permitindo criar objetos passo a passo. Já o polimorfismo permite que diferentes objetos respondam de maneiras diferentes utilizando a mesma chamada de método.  
+##   Builder
 
-A junção dos dois padrões parece uma boa solução para a estrutura do projeto, principalmente na parte de criação de diferentes tipos de posts.  
-
-## Exemplo da ideia  
-
-```python
-builder = PostBuilder()
-
-post = (
-    builder
-    .tipo("imagem")
-    .texto("Olá")
-    .imagem("foto.png")
-    .build()
-)
-```
+class PostBuilderProtocol(ABC):
+class PostBuilder(PostBuilderProtocol):
+class Director:
 
 Então:  
 
 - **Builder** → responsável por construir o post  
-- **Polimorfismo** → responsável pelo comportamento específico de cada tipo de post  
-
 ---
 
-# Observação  
+# Uso do padrão Observer (Design Pattern Comportamental) 
 
-Os planos descritos acima podem ser alterados conforme o desenvolvimento do projeto evoluir. No momento, esta é a arquitetura planejada.
+O Observer foi usado para notificar os usuários quando recebem uma solicitação para seguir ou quando for preciso aceitar a solicitação de um outro usuário. Assim, para a implementação desse padrão foram feitas 4 classes, sendo duas interfaces, ou seja, o contrato preciso para implementar o observer.
+
+##   Observer
+
+class IObservable(ABC):
+class Subject(IObservable):
+class IObserver(ABC):
+class Observer(IObserver):
+
+# Uso do padrão Decorator (Design Pattern Decorator)
+
+O Decorator foi usado para adicionar funcionalidades extras na rede social. Obrigatoriamente precisa implementar os métodos da classe IComponent(ABC), então tanto class Component(IComponent) quanto class Decorator(IComponent) recebem como parâmetro class IComponent(ABC) para implementar métodos obrigatórios. Contudo, o Decorator tem as obrigatórias e as extras, como repost de um post, like e dislike.
+
+##   Decorator
+
+class IComponent(ABC):
+class Component(IComponent):
+class Decorator(IComponent):
+
+
+
